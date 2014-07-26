@@ -42,13 +42,14 @@ def content_object_init(instance):
                 # Strip off {filename}, |filename| or /static
                 if img_path.startswith(('{filename}', '|filename|')):
                     img_path = img_path[10:]
+
+                    # Build the source image filename
+                    src = instance.settings['PATH'] + img_path + '/' + img_filename
                 elif img_path.startswith('/static'):
-                    img_path = img_path[7:]
+                    # Build the source image filename
+                    src = instance.settings['STATIC_IMAGES_PATH'] + img_path + '/' + img_filename
                 else:
                     logger.warning('Better Fig. Error: img_path should start with either {filename}, |filename| or /static')
-
-                # Build the source image filename
-                src = instance.settings['PATH'] + img_path + '/' + img_filename
 
                 logger.debug('Better Fig. src: %s', src)
                 if not (path.isfile(src) and access(src, R_OK)):
